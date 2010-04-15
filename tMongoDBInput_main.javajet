@@ -1,0 +1,92 @@
+<%@ jet
+imports="
+	org.talend.designer.codegen.config.CodeGeneratorArgument
+	org.talend.core.model.process.INode
+	org.talend.core.model.process.ElementParameterParser
+	org.talend.core.model.process.IConnection
+	org.talend.core.model.metadata.IMetadataColumn
+	org.talend.core.model.metadata.IMetadataTable
+	org.talend.core.model.metadata.types.JavaTypesManager
+	org.talend.core.model.metadata.types.JavaType
+    org.talend.core.model.process.IConnectionCategory
+    org.talend.core.model.metadata.MappingTypeRetriever
+    org.talend.core.model.metadata.MetadataTalendType
+	java.util.List
+	java.util.ArrayList
+	java.util.Map
+	java.util.HashMap
+	java.util.LinkedList
+"
+%>
+<%
+  CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+  INode node = (INode)codeGenArgument.getArgument();
+  String cid = node.getUniqueName();
+
+
+  /*
+   * Retrieve internal schema : build columnList
+   */
+  List<IMetadataColumn> columnList = null;
+  List<IMetadataTable> metadatas = node.getMetadataList();
+  if(metadatas != null && metadatas.size() > 0)
+  {
+      IMetadataTable metadata = metadatas.get(0);
+      if(metadata != null)
+      {
+          columnList = metadata.getListColumns();
+      }
+  }
+
+
+  /*
+   * Retrieve input and output Talend connections
+   */
+  List<? extends IConnection> inputs = node.getIncomingConnections();
+  List<? extends IConnection> outputs = node.getOutgoingSortedConnections();
+  String incomingConnName = null;
+  String outgoingConnName = null;
+
+  if (inputs.size() > 0)
+  {
+      IConnection in = inputs.get(0);
+      incomingConnName = in.getName();
+  }
+
+  if (outputs.size() > 0)
+  {
+      IConnection out = outputs.get(0);
+      outgoingConnName = out.getName();
+  }
+
+
+  /*
+   * For each iteration into the component, we iterate over
+   * each column
+   */
+  %>
+  com.mongodb.DBObject o_<%=cid%> = cursor_<%=cid%>.next();
+  <%
+  for (IMetadataColumn colStmt : columnList)
+  {
+      String cType = colStmt.getTalendType();
+      if (outgoingConnName != null)
+      {
+          %>
+          <%
+          if (cType.equals("id_String"))
+          {
+				%>
+				<%=outgoingConnName%>.<%=colStmt%> = o_<%=cid%>.get("<%=colStmt%>").toString();
+				<%
+          }
+          else if (cType.equals("id_Integer"))
+          {
+				%>
+				<%=outgoingConnName%>.<%=colStmt%> = new Integer(o_<%=cid%>.get("<%=colStmt%>").toString());
+				<%
+          }
+      }
+  }
+%>
+++nb_line_<%=cid %>;
