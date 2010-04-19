@@ -15,10 +15,10 @@
 	=======
 	
 		tMongoDBConnection is a Talend component to be used in Talend Open 		
-		Studio or Talend Integration Suite in order to retrieve rows from a
-		MongoDB server.
+		Studio or Talend Integration Suite in order to connect to a MongoDB
+		server.
 		
-		A tMongoDBConnection is required.
+		This component has to be used before any of other tMongo component.
 		
 		
 	HOW TO USE IT
@@ -26,20 +26,23 @@
 	
 		You just have to fill the different available parameters :
 		
-			o Host : hostname (or IP address) of your MongoDB server
-			o Database : name of database you want to work with
-			o Port : port of your MongoDB server
-			o Required authentication : check it if your server requires
-			  to be authenticated. Then you can provide the username and
-			  password to use.
+			o Use existing connection : need to be checked
+			o Component list : select the connection to use
+			o Collection : the collection you want to work with
+			o Query : a JSon query to be used by MongoDB.
+				eg: "{ 'name' : 'Adrien' }"		[optional]
+			o Sort : a valid JSon criteria to sort rows
+				eg: "{ 'name' : -1  }"   		[optional]
+			o Limit : an Integer to limit the number of rows to retrieve
+				eg: 42							[optional]
+				
+			  /!\ Note : surrounding quotes are required (you'll get syntax
+						 error otherwise)
 			
 
 	BUGS / TODO
 	===========
 	
-		[ ] Talend "on[Subjob|Component]Error" connections are not clearly
-		 	used
+		[ ] Remove the checkbox "Use existing connection" ?
 
 ==============================================================================
-
-
