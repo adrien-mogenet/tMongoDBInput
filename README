@@ -1,1 +1,45 @@
-Talend component to select rows from a MongoDB server
+==============================================================================
+
+                               * R E A D M E *
+
+==============================================================================
+
+	ABOUT
+	=====
+
+		Author: ........Adrien Mogenet <adrien.mogenet@gmail.com>
+		Creation: ......2010-04-13
+
+
+	PURPOSE
+	=======
+	
+		tMongoDBConnection is a Talend component to be used in Talend Open 		
+		Studio or Talend Integration Suite in order to retrieve rows from a
+		MongoDB server.
+		
+		A tMongoDBConnection is required.
+		
+		
+	HOW TO USE IT
+	=============
+	
+		You just have to fill the different available parameters :
+		
+			o Host : hostname (or IP address) of your MongoDB server
+			o Database : name of database you want to work with
+			o Port : port of your MongoDB server
+			o Required authentication : check it if your server requires
+			  to be authenticated. Then you can provide the username and
+			  password to use.
+			
+
+	BUGS / TODO
+	===========
+	
+		[ ] Talend "on[Subjob|Component]Error" connections are not clearly
+		 	used
+
+==============================================================================
+
+
