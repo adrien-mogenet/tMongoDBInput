@@ -14,7 +14,7 @@
 	PURPOSE
 	=======
 	
-		tMongoDBConnection is a Talend component to be used in Talend Open 		
+		tMongoDBInput is a Talend component to be used in Talend Open 		
 		Studio or Talend Integration Suite in order to connect to a MongoDB
 		server.
 		
@@ -30,14 +30,24 @@
 			o Component list : select the connection to use
 			o Collection : the collection you want to work with
 			o Query : a JSon query to be used by MongoDB.
-				eg: "{ 'name' : 'Adrien' }"		[optional]
-			o Sort : a valid JSon criteria to sort rows
-				eg: "{ 'name' : -1  }"   		[optional]
-			o Limit : an Integer to limit the number of rows to retrieve
-				eg: 42							[optional]
+				eg: "{ 'name' : 'Adrien' }"
+			
 				
-			  /!\ Note : surrounding quotes are required (you'll get syntax
-						 error otherwise)
+			Optional
+			--------
+			
+			o Sort : a valid JSon criteria to sort rows
+				eg: "{ 'name' : -1  }"
+				
+			o Limit : an Integer to limit the number of rows to retrieve
+				eg: 42
+				
+				
+			/!\ Note
+			----------------------------------------
+			Surrounding quotes are required, you'll 
+			get syntax error otherwise
+			----------------------------------------
 			
 
 	BUGS / TODO
