@@ -83,7 +83,56 @@ imports="
           else if (cType.equals("id_Integer"))
           {
 				%>
-				<%=outgoingConnName%>.<%=colStmt%> = new Integer(o_<%=cid%>.get("<%=colStmt%>").toString());
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof Integer || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					// MongoDB supports the type Integer, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (Integer) o_<%=cid%>.get("<%=colStmt%>");
+				} else if (o_<%=cid%>.get("<%=colStmt%>") instanceof Double) {
+					// ... but many clients save Integers as Doubles, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (o_<%=cid%>.get("<%=colStmt%>") == null) ? null : (int) Math.round((Double) o_<%=cid%>.get("<%=colStmt%>"));
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Integer(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
+				<%
+          }
+          else if (cType.equals("id_Double"))
+          {
+				%>
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof Double || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					<%=outgoingConnName%>.<%=colStmt%> = (Double) o_<%=cid%>.get("<%=colStmt%>");
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Double(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
+				<%
+          }
+          else if (cType.equals("id_Float"))
+          {
+				%>
+				if (o_<%=cid%>.get("<%=colStmt%>") == null) {
+					<%=outgoingConnName%>.<%=colStmt%> = null;
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Float(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
+				<%
+          }
+          else if (cType.equals("id_Date"))
+          {
+				%>
+				<%=outgoingConnName%>.<%=colStmt%> = (Date) o_<%=cid%>.get("<%=colStmt%>");
+				<%
+          }
+          else if (cType.equals("id_Object"))
+          {
+				%>
+				<%=outgoingConnName%>.<%=colStmt%> = o_<%=cid%>.get("<%=colStmt%>");
+				<%
+          }
+          else if (cType.equals("id_List"))
+          {
+				%>
+				<%=outgoingConnName%>.<%=colStmt%> = (List) o_<%=cid%>.get("<%=colStmt%>");
 				<%
           }
       }

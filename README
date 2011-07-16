@@ -18,7 +18,7 @@
 		Studio or Talend Integration Suite in order to connect to a MongoDB
 		server.
 		
-		This component has to be used before any of other tMongo component.
+		A tMongoDBConnection is required.
 		
 		
 	HOW TO USE IT
