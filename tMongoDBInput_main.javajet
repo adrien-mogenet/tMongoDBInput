@@ -86,6 +86,21 @@ imports="
 				}
 				<%
           }
+          else if (cType.equals("id_Long"))
+          {
+				%>
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof Long || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					// MongoDB supports the type Long, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (Long) o_<%=cid%>.get("<%=colStmt%>");
+				} else if (o_<%=cid%>.get("<%=colStmt%>") instanceof Double) {
+					// ... but many clients save Longs as Doubles, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (o_<%=cid%>.get("<%=colStmt%>") == null) ? null : Math.round((Double) o_<%=cid%>.get("<%=colStmt%>"));
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Long(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
+				<%
+          }
           else if (cType.equals("id_Integer"))
           {
 				%>
