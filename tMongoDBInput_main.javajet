@@ -138,6 +138,17 @@ imports="
 				}
 				<%
           }
+          else if (cType.equals("id_Boolean"))
+          {
+				%>
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof Boolean || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					<%=outgoingConnName%>.<%=colStmt%> = (Boolean) o_<%=cid%>.get("<%=colStmt%>");
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Boolean(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
+				<%
+          }
           else if (cType.equals("id_Date"))
           {
 				%>
