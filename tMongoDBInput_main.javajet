@@ -77,7 +77,28 @@ imports="
           if (cType.equals("id_String"))
           {
 				%>
-				<%=outgoingConnName%>.<%=colStmt%> = o_<%=cid%>.get("<%=colStmt%>").toString();
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof String || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					// MongoDB supports the type String, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (String) o_<%=cid%>.get("<%=colStmt%>");
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = o_<%=cid%>.get("<%=colStmt%>").toString();
+				}
+				<%
+          }
+          else if (cType.equals("id_Long"))
+          {
+				%>
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof Long || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					// MongoDB supports the type Long, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (Long) o_<%=cid%>.get("<%=colStmt%>");
+				} else if (o_<%=cid%>.get("<%=colStmt%>") instanceof Double) {
+					// ... but many clients save Longs as Doubles, ...
+					<%=outgoingConnName%>.<%=colStmt%> = (o_<%=cid%>.get("<%=colStmt%>") == null) ? null : Math.round((Double) o_<%=cid%>.get("<%=colStmt%>"));
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Long(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
 				<%
           }
           else if (cType.equals("id_Integer"))
@@ -114,6 +135,17 @@ imports="
 				} else {
 					// ... best-effort-conversion for other types 
 					<%=outgoingConnName%>.<%=colStmt%> = new Float(o_<%=cid%>.get("<%=colStmt%>").toString());
+				}
+				<%
+          }
+          else if (cType.equals("id_Boolean"))
+          {
+				%>
+				if (o_<%=cid%>.get("<%=colStmt%>") instanceof Boolean || o_<%=cid%>.get("<%=colStmt%>") == null) {
+					<%=outgoingConnName%>.<%=colStmt%> = (Boolean) o_<%=cid%>.get("<%=colStmt%>");
+				} else {
+					// ... best-effort-conversion for other types 
+					<%=outgoingConnName%>.<%=colStmt%> = new Boolean(o_<%=cid%>.get("<%=colStmt%>").toString());
 				}
 				<%
           }
